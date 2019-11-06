@@ -24,7 +24,7 @@ def prep_zillow(data):
     imputer = SimpleImputer(missing_values=np.nan, strategy='mean')
     data.info()
     data['poor_people'] = data['taxvaluedollarcnt'] < 1000000
-    data['log_me'] = (data[]'logerror'] < 1) & (data['logerror'] > -1)
+    data['log_me'] = (data['logerror'] < 1) & (data['logerror'] > -1)
     data = data.loc[subset.poor_people, :]
     data = data.loc[subset.log_me, :]
     zillow_data = data

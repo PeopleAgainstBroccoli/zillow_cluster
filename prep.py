@@ -1,6 +1,6 @@
 import acquire
 import numpy as np
-
+import pandas as pd
 
 def nulls_by_col(df):
     num_missing = df.isnull().sum()
@@ -36,4 +36,4 @@ def prep_zillow(data):
     subset['log_me'] = (subset['logerror'] < 1) & (subset['logerror'] > -1)
     subset = subset.loc[subset.poor_people, :]
     subset = subset.loc[subset.log_me, :]
-    return zillow_data, subset
+    return zillow_data, subset 

@@ -1,6 +1,9 @@
 import acquire
 import numpy as np
 import pandas as pd
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import LabelEncoder
+
 
 def nulls_by_col(df):
     num_missing = df.isnull().sum()
@@ -20,6 +23,10 @@ def prep_zillow(data):
     encoder = LabelEncoder()
     imputer = SimpleImputer(missing_values=np.nan, strategy='mean')
     data.info()
+    data['poor_people'] = data['taxvaluedollarcnt'] < 1000000
+    data['log_me'] = (data[]'logerror'] < 1) & (data['logerror'] > -1)
+    data = data.loc[subset.poor_people, :]
+    data = data.loc[subset.log_me, :]
     zillow_data = data
     zillow_data['taxdelinquencyflag'] = zillow_data['taxdelinquencyflag'].fillna('N')
     assumed_zero = ['fireplacecnt', 'garagecarcnt', 'poolcnt', 'taxdelinquencyyear']
@@ -30,10 +37,6 @@ def prep_zillow(data):
                                 'storytypeid', 'pooltypeid2', 'pooltypeid10', 'pooltypeid7','basementsqft', \
                                 'typeconstructiontypeid', 'fireplaceflag'])
     
-    subset = zillow_data[['latitude', 'longitude', 'taxvaluedollarcnt', 'logerror', 'fips']]
-    subset['fips'] = encoder.fit_transform(data['fips'])
-    subset['poor_people'] = subset['taxvaluedollarcnt'] < 1000000
-    subset['log_me'] = (subset['logerror'] < 1) & (subset['logerror'] > -1)
-    subset = subset.loc[subset.poor_people, :]
-    subset = subset.loc[subset.log_me, :]
-    return zillow_data, subset 
+    #subset = zillow_data[['latitude', 'longitude', 'taxvaluedollarcnt', 'logerror', 'fips']]
+    data['fips'] = encoder.fit_transform(data['fips'])
+    return zillow_data

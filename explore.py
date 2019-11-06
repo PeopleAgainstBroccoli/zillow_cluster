@@ -20,3 +20,6 @@ sns.scatterplot(y="taxvaluedollarcnt", x="logerror", hue = 'fips',
              data=subset)
 
 plt.show()
+
+sns.scatterplot('latitude', 'longitude' , hue = 'taxvaluedollarcnt', data = subset)
+plt.show()

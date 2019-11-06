@@ -27,4 +27,8 @@ def prep_zillow(data):
     subset['fips'] = encoder.fit_transform(data['fips'])
     subset['poor_people'] = subset['taxvaluedollarcnt'] < 1000000
     subset['log_me'] = (subset['logerror'] < .9) & (subset['logerror'] > -.9)
+    subset = subset.loc[subset.poor_people, :]
+    subset = subset.loc[subset.log_me, :]
     return subset
+
+

@@ -16,19 +16,24 @@ def nulls_by_row(df):
     return rows_missing
 
 
-
 def prep_zillow(data):
+    encoder = LabelEncoder()
+    imputer = SimpleImputer(missing_values=np.nan, strategy='mean')
     data.info()
     zillow_data = data
-    assumed_zero = ['fireplacecnt', 'garagecarcnt', 'hashottubeorspa', 'poolcnt']
+    zillow_data['taxdelinquencyflag'] = zillow_data['taxdelinquencyflag'].fillna('N')
+    assumed_zero = ['fireplacecnt', 'garagecarcnt', 'poolcnt', 'taxdelinquencyyear']
     for a in assumed_zero:
-        zillow_data[a].apply(lambda x: 0 if x == np.nan() else x)
+        zillow_data[a] = zillow_data[a].fillna(0)
+        
+    zillow_data = zillow_data.drop(columns = ['finishedsquarefeet15', 'finishedsquarefeet13', 'buildingclasstypeid', \
+                                'storytypeid', 'pooltypeid2', 'pooltypeid10', 'pooltypeid7','basementsqft', \
+                                'typeconstructiontypeid', 'fireplaceflag'])
+    
     subset = zillow_data[['latitude', 'longitude', 'taxvaluedollarcnt', 'logerror', 'fips']]
     subset['fips'] = encoder.fit_transform(data['fips'])
     subset['poor_people'] = subset['taxvaluedollarcnt'] < 1000000
-    subset['log_me'] = (subset['logerror'] < .9) & (subset['logerror'] > -.9)
+    subset['log_me'] = (subset['logerror'] < 1) & (subset['logerror'] > -1)
     subset = subset.loc[subset.poor_people, :]
     subset = subset.loc[subset.log_me, :]
-    return subset
-
-
+    return zillow_data, subset

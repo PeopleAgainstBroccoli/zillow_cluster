@@ -2,6 +2,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import env
 import MySQLdb
+import pandas.io.sql as psql
 
 
 def get_db_url(comm = '!', database = '!'):

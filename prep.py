@@ -25,8 +25,8 @@ def prep_zillow(data):
     data.info()
     data['poor_people'] = data['taxvaluedollarcnt'] < 1000000
     data['log_me'] = (data['logerror'] < 1) & (data['logerror'] > -1)
-    data = data.loc[subset.poor_people, :]
-    data = data.loc[subset.log_me, :]
+    data = data.loc[data.poor_people, :]
+    data = data.loc[data.log_me, :]
     zillow_data = data
     zillow_data['taxdelinquencyflag'] = zillow_data['taxdelinquencyflag'].fillna('N')
     assumed_zero = ['fireplacecnt', 'garagecarcnt', 'poolcnt', 'taxdelinquencyyear']

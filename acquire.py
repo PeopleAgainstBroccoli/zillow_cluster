@@ -10,7 +10,7 @@ def get_db_url(comm = '!', database = '!'):
     return psql.read_sql(comm, con=db)
 
 
-data = db.get_db_url(comm = """Select *
+data = get_db_url(comm = """Select *
 From properties_2017
 Join
 (SELECT

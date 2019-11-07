@@ -39,14 +39,12 @@ def prep_zillow(data):
                     'yearbuilt', 'structuretaxvaluedollarcnt', 'censustractandblock']
     
     for i in impute_mean:
-        print(zillow_data[i])
 
         zillow_data[i] = imputer.fit_transform(zillow_data[[i]])
         
     for i in impute_mode:
         zillow_data[i] = mode_imputer.fit_transform(zillow_data[[i]])
         
-    print(zillow_data)
     #impute regionidcity, calculatedfinishedsquarefeet, lotsizesquarefeet, regionidzip, yearbuilt, structuretaxvaluedollarcnt, censustractandblock
     zillow_data = zillow_data.drop(columns = ['finishedsquarefeet15', 'finishedsquarefeet13', 'buildingclasstypeid', \
                                 'storytypeid', 'pooltypeid2', 'pooltypeid10', 'pooltypeid7','basementsqft', \
@@ -54,12 +52,14 @@ def prep_zillow(data):
                                               'finishedfloor1squarefeet', 'finishedsquarefeet50', 'finishedsquarefeet12', 'finishedsquarefeet6', \
                                               'garagetotalsqft', 'hashottuborspa', 'heatingorsystemtypeid', 'poolsizesum', \
                                               'propertyzoningdesc', 'regionidneighborhood', 'threequarterbathnbr', \
-                                              'yardbuildingsqft26', 'yardbuildingsqft17', 'unitcnt'])
+                                              'yardbuildingsqft26', 'yardbuildingsqft17', 'unitcnt', 'decktypeid', \
+                                              'buildingqualitytypeid', 'numberofstories'])
     
 
 
 
     #subset = zillow_data[['latitude', 'longitude', 'taxvaluedollarcnt', 'logerror', 'fips']]
     zillow_data['fips'] = encoder.fit_transform(zillow_data['fips'])
-    zillow_data
+    zillow_data = zillow_data.dropna()
     return zillow_data
+

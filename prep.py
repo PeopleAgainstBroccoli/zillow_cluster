@@ -38,9 +38,11 @@ def prep_zillow(data):
                                               'finishedfloor1squarefeet', 'finishedsquarefeet50', 'finishedsquarefeet12', 'finishedsquarefeet6', \
                                               'garagetotalsqft', 'hashottuborspa', 'heatingorsystemtypeid', 'poolsizesum', \
                                               'propertyzoningdesc', 'regionidneighborhood', 'threequarterbathnbr', \
-                                              'yardbuildingsqft26', 'yardbuildingsqft17', 'unitcnt'])
+                                              'yardbuildingsqft26', 'yardbuildingsqft17', 'unitcnt', \
+                                                  'buildingqualitytypeid', 'decktypeid', 'numberofstories'])
     
 
     #subset = zillow_data[['latitude', 'longitude', 'taxvaluedollarcnt', 'logerror', 'fips']]
     zillow_data['fips'] = encoder.fit_transform(zillow_data['fips'])
+    zillow_data
     return zillow_data

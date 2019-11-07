@@ -34,7 +34,7 @@ def prep_zillow(data):
         zillow_data[a] = zillow_data[a].fillna(0)
     zillow_data = zillow_data.drop(columns = ['finishedsquarefeet15', 'finishedsquarefeet13', 'buildingclasstypeid', \
                                 'storytypeid', 'pooltypeid2', 'pooltypeid10', 'pooltypeid7','basementsqft', \
-                                'typeconstructiontypeid', 'fireplaceflag', 'calculatedbathbr', 'airconditioning', 'architecturalstyletypeid', \
+                                'typeconstructiontypeid', 'fireplaceflag', 'calculatedbathnbr', 'airconditioningtypeid', 'architecturalstyletypeid', \
                                               'finishedfloor1squarefeet', 'finishedsquarefeet50', 'finishedsquarefeet12', 'finishedsquarefeet6', \
                                               'garagetotalsqft', 'hashottuborspa', 'heatingorsystemtypeid', 'poolsizesum', \
                                               'propertyzoningdesc', 'regionidneighborhood', 'threequarterbathnbr', \

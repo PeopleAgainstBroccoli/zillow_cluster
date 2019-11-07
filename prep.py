@@ -22,6 +22,7 @@ def nulls_by_row(df):
 def prep_zillow(data):
     encoder = LabelEncoder()
     imputer = SimpleImputer(missing_values=np.nan, strategy='mean')
+    mode_imputer = SimpleImputer(missing_values = np.nan, strategy = 'most_frequent')
     data.info()
     data['poor_people'] = data['taxvaluedollarcnt'] < 1000000
     data['log_me'] = (data['logerror'] < 1) & (data['logerror'] > -1)
@@ -32,15 +33,31 @@ def prep_zillow(data):
     assumed_zero = ['fireplacecnt', 'garagecarcnt', 'poolcnt', 'taxdelinquencyyear']
     for a in assumed_zero:
         zillow_data[a] = zillow_data[a].fillna(0)
+    
+    impute_mode = ['regionidcity', 'censustractandblock']
+    impute_mean = [ 'calculatedfinishedsquarefeet', 'lotsizesquarefeet', 'regionidzip',\
+                    'yearbuilt', 'structuretaxvaluedollarcnt', 'censustractandblock']
+    
+    for i in impute_mean:
+        print(zillow_data[i])
+
+        zillow_data[i] = imputer.fit_transform(zillow_data[[i]])
+        
+    for i in impute_mode:
+        zillow_data[i] = mode_imputer.fit_transform(zillow_data[[i]])
+        
+    print(zillow_data)
+    #impute regionidcity, calculatedfinishedsquarefeet, lotsizesquarefeet, regionidzip, yearbuilt, structuretaxvaluedollarcnt, censustractandblock
     zillow_data = zillow_data.drop(columns = ['finishedsquarefeet15', 'finishedsquarefeet13', 'buildingclasstypeid', \
                                 'storytypeid', 'pooltypeid2', 'pooltypeid10', 'pooltypeid7','basementsqft', \
                                 'typeconstructiontypeid', 'fireplaceflag', 'calculatedbathnbr', 'airconditioningtypeid', 'architecturalstyletypeid', \
                                               'finishedfloor1squarefeet', 'finishedsquarefeet50', 'finishedsquarefeet12', 'finishedsquarefeet6', \
                                               'garagetotalsqft', 'hashottuborspa', 'heatingorsystemtypeid', 'poolsizesum', \
                                               'propertyzoningdesc', 'regionidneighborhood', 'threequarterbathnbr', \
-                                              'yardbuildingsqft26', 'yardbuildingsqft17', 'unitcnt', \
-                                                  'buildingqualitytypeid', 'decktypeid', 'numberofstories'])
+                                              'yardbuildingsqft26', 'yardbuildingsqft17', 'unitcnt'])
     
+
+
 
     #subset = zillow_data[['latitude', 'longitude', 'taxvaluedollarcnt', 'logerror', 'fips']]
     zillow_data['fips'] = encoder.fit_transform(zillow_data['fips'])

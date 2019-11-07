@@ -61,5 +61,5 @@ def prep_zillow(data):
 
     #subset = zillow_data[['latitude', 'longitude', 'taxvaluedollarcnt', 'logerror', 'fips']]
     zillow_data['fips'] = encoder.fit_transform(zillow_data['fips'])
-    zillow_data
+    zillow_data = zillow_data.dropna()
     return zillow_data

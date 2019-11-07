@@ -4,7 +4,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 data = acquire.wrangle_zillow()
-data, subset = prep.prep_zillow()
+data = prep.prep_zillow()
 
 
 
@@ -13,13 +13,23 @@ sns.scatterplot(y="taxvaluedollarcnt", x="logerror", hue = 'fips',
 
 plt.show()
 
-subset['is_not'] = subset['fips'] != 0
-subset = subset.loc[subset.is_not, :]
+
+
+
+
+data['is_not'] = data['fips'] != 0
+data = data.loc[data.is_not, :]
 
 sns.scatterplot(y="taxvaluedollarcnt", x="logerror", hue = 'fips',
-             data=subset)
+             data=data)
 
 plt.show()
 
-sns.scatterplot('latitude', 'longitude' , hue = 'taxvaluedollarcnt', data = subset)
+sns.scatterplot('latitude', 'longitude' , hue = 'taxvaluedollarcnt', data = data)
 plt.show()
+
+
+
+sns.lineplot(x = 'ammenity_count', y = 'logerror', data = data)
+plt.show()
+ 

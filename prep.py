@@ -38,5 +38,5 @@ def prep_zillow(data):
                                 'typeconstructiontypeid', 'fireplaceflag'])
     
     #subset = zillow_data[['latitude', 'longitude', 'taxvaluedollarcnt', 'logerror', 'fips']]
-    data['fips'] = encoder.fit_transform(data['fips'])
+    zillow_data['fips'] = encoder.fit_transform(zillow_data['fips'])
     return zillow_data

@@ -35,7 +35,11 @@ def prep_zillow(data):
         
     zillow_data = zillow_data.drop(columns = ['finishedsquarefeet15', 'finishedsquarefeet13', 'buildingclasstypeid', \
                                 'storytypeid', 'pooltypeid2', 'pooltypeid10', 'pooltypeid7','basementsqft', \
-                                'typeconstructiontypeid', 'fireplaceflag'])
+                                'typeconstructiontypeid', 'fireplaceflag', 'calculatedbathbr', 'airconditioning', 'architecturalstyletypeid', \
+                                              'finishedfloor1squarefeet', 'finishedsquarefeet50', 'finishedsquarefeet12', 'finishedsquarefeet6', \
+                                              'garagetotalsqft', 'hashottuborspa', 'heatingorsystemtypeid', 'poolsizesum', \
+                                              'propertyzoningdesc', 'regionidneighborhood', 'threequarterbathnbr'. 'unitcnt', \
+                                              'yardbuildingsqft26', 'yardbuildingsqft17', 'unitcnt'])
     
     #subset = zillow_data[['latitude', 'longitude', 'taxvaluedollarcnt', 'logerror', 'fips']]
     zillow_data['fips'] = encoder.fit_transform(zillow_data['fips'])

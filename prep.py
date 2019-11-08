@@ -18,7 +18,7 @@ def nulls_by_row(df):
     rows_missing = pd.DataFrame({'num_cols_missing': num_cols_missing, 'pct_cols_missing': pct_cols_missing}).reset_index().groupby(['num_cols_missing','pct_cols_missing']).count().rename(index=str, columns={'index': 'num_rows'}).reset_index()
     return rows_missing
 
-def prep_zillow(data):
+def prep_zillow_two(data):
     encoder = LabelEncoder()
     imputer = SimpleImputer(missing_values=np.nan, strategy='mean')
     mode_imputer = SimpleImputer(missing_values = np.nan, strategy = 'most_frequent')
@@ -50,11 +50,11 @@ def prep_zillow(data):
     zillow_data = zillow_data.drop(columns = ['finishedsquarefeet15', 'finishedsquarefeet13', 'buildingclasstypeid', \
                                 'storytypeid', 'pooltypeid2', 'pooltypeid10', 'pooltypeid7','basementsqft', \
                                 'typeconstructiontypeid', 'fireplaceflag', 'calculatedbathnbr', 'airconditioningtypeid', 'architecturalstyletypeid', \
-                                              'finishedfloor1squarefeet', 'taxamount','finishedsquarefeet50', 'finishedsquarefeet12', 'finishedsquarefeet6', \
-                                              'garagetotalsqft', 'hashottuborspa', 'heatingorsystemtypeid', 'poolsizesum', \
+                                              'finishedfloor1squarefeet', 'taxamount','rawcensustractandblock','finishedsquarefeet50', 'finishedsquarefeet12', 'finishedsquarefeet6', \
+                                              'garagetotalsqft', 'fullbathcnt', 'censustractandblock', 'hashottuborspa', 'heatingorsystemtypeid', 'poolsizesum', \
                                               'propertyzoningdesc', 'regionidneighborhood', 'threequarterbathnbr', \
-                                              'yardbuildingsqft26', 'structuretaxvaluedollarcnt', 'yardbuildingsqft17', \
-                                              'unitcnt', 'decktypeid', 'landtaxvaluedollarcnt', \
+                                              'yardbuildingsqft26', 'structuretaxvaluedollarcnt', 'id', 'yardbuildingsqft17', \
+                                              'unitcnt', 'decktypeid', 'landtaxvaluedollarcnt',\
                                               'buildingqualitytypeid', 'numberofstories', 'transactiondate', 'propertycountylandusecode'])
     
 

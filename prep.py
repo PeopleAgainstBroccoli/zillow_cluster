@@ -55,7 +55,7 @@ def prep_zillow(data):
                                               'garagetotalsqft', 'fullbathcnt', 'censustractandblock', 'hashottuborspa', 'heatingorsystemtypeid', 'poolsizesum', \
                                               'propertyzoningdesc', 'regionidneighborhood', 'threequarterbathnbr', \
                                               'yardbuildingsqft26', 'structuretaxvaluedollarcnt', 'id', 'yardbuildingsqft17', \
-                                              'unitcnt', 'decktypeid', 'landtaxvaluedollarcnt', 'assessmentyear', 'poor_people', 'log_me',\
+                                              'unitcnt', 'decktypeid', 'landtaxvaluedollarcnt','assessmentyear', 'log_me', 'poor_people',\
                                               'buildingqualitytypeid', 'numberofstories', 'transactiondate', 'propertycountylandusecode'])
     
 
@@ -64,4 +64,7 @@ def prep_zillow(data):
     #subset = zillow_data[['latitude', 'longitude', 'taxvaluedollarcnt', 'logerror', 'fips']]
     zillow_data['fips'] = encoder.fit_transform(zillow_data['fips'])
     zillow_data = zillow_data.dropna()
+    zillow_data = min_max_scaler(zillow_data)
     return zillow_data
+
+

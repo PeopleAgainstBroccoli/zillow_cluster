@@ -36,8 +36,9 @@ def prep_zillow(data):
     impute_mode = ['regionidcity', 'censustractandblock']
     impute_mean = [ 'calculatedfinishedsquarefeet', 'lotsizesquarefeet', 'regionidzip',\
                     'yearbuilt', 'structuretaxvaluedollarcnt', 'censustractandblock']
-    data['taxdelinquencyflag'] = encoder.fit_transform(data[['taxdelinquencyflag']])
 
+
+    data['taxdelinquencyflag'] = encoder.fit_transform(data[['taxdelinquencyflag']])
     for i in impute_mean:
 
         zillow_data[i] = imputer.fit_transform(zillow_data[[i]])
@@ -49,10 +50,11 @@ def prep_zillow(data):
     zillow_data = zillow_data.drop(columns = ['finishedsquarefeet15', 'finishedsquarefeet13', 'buildingclasstypeid', \
                                 'storytypeid', 'pooltypeid2', 'pooltypeid10', 'pooltypeid7','basementsqft', \
                                 'typeconstructiontypeid', 'fireplaceflag', 'calculatedbathnbr', 'airconditioningtypeid', 'architecturalstyletypeid', \
-                                              'finishedfloor1squarefeet', 'finishedsquarefeet50', 'finishedsquarefeet12', 'finishedsquarefeet6', \
+                                              'finishedfloor1squarefeet', 'taxamount','finishedsquarefeet50', 'finishedsquarefeet12', 'finishedsquarefeet6', \
                                               'garagetotalsqft', 'hashottuborspa', 'heatingorsystemtypeid', 'poolsizesum', \
                                               'propertyzoningdesc', 'regionidneighborhood', 'threequarterbathnbr', \
-                                              'yardbuildingsqft26', 'yardbuildingsqft17', 'unitcnt', 'decktypeid', \
+                                              'yardbuildingsqft26', 'structuretaxvaluedollarcnt', 'yardbuildingsqft17', \
+                                              'unitcnt', 'decktypeid', 'landtaxvaluedollarcnt'\
                                               'buildingqualitytypeid', 'numberofstories', 'transactiondate', 'propertycountylandusecode'])
     
 
@@ -62,3 +64,5 @@ def prep_zillow(data):
     zillow_data['fips'] = encoder.fit_transform(zillow_data['fips'])
     zillow_data = zillow_data.dropna()
     return zillow_data
+
+

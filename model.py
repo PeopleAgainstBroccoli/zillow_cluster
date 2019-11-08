@@ -18,23 +18,20 @@ warnings.filterwarnings("ignore")
 import math
 
 def cluster_zillow(data):
-    kmeans = KMeans(n_clusters = 4)
+    kmeans = KMeans(n_clusters = 3)
     encoder = LabelEncoder()
     scaler = MinMaxScaler()
-    data = data.drop(columns = ['transactiondate', 'propertycountylandusecode'])
     train, test = train_test_split(data, random_state = 123)
-    train['taxdelinquencyflag'] = encoder.fit_transform(train[['taxdelinquencyflag']])
     kmeans.fit(train[['logerror', 'taxvaluedollarcnt']])
     scaler.fit_transform(train)
-    
-    print(kmeans.cluster_centers_)
-    
-    #sns.scatterplot(x = 'logerror', y = 'taxvaluedollarcnt', data = train, hue=kmeans.labels_, c = 'green')
-    #sns.scatterplot('latitude', 'longitude' , hue = kmeans.labels_, data = test)
-    #print(train.info())
-    #sns.pairplot(train)
-    #plt.show()
+    train['cluster_group'] = kmeans.labels_
+    print(train)
+    print('AVERAGE LOG ERROR BY CLUSTER \n%s' % (train.groupby(kmeans.labels_)['logerror'].mean()))
+    sns.scatterplot(x = 'logerror', y = 'taxvaluedollarcnt', data = train, hue=kmeans.labels_, c = 'green')
+    plt.show()
     return train, test
+
+
 
 
 def baseline_model_zillow(train, test):

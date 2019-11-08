@@ -72,7 +72,7 @@ def results_train(logit, y_pred, y_pred_proba, x_train, y_train):
 
 def return_xy(train):
     x1 = train[['bedroomcnt', 'poolcnt', 'taxvaluedollarcnt', 'calculatedfinishedsquarefeet', 'bathroomcnt', \
-                'taxdelinquencyflag', 'taxdelinquencyyear', 'cluster']]
+                'taxdelinquencyflag', 'taxdelinquencyyear']]
     #x1 = train[['bedroomcnt', 'bathroomcnt', 'calculatedfinishedsquarefeet', 'taxdelinquencyflag', 'cluster']]
     #x2 = test[['bedroomcnt', 'bathroomcnt', 'calculatedfinishedsquarefeet', 'taxdelinquencyflag']]
     y1=train[['logerror']]
@@ -90,19 +90,32 @@ def cluster_zillow(data):
     train['cluster_group'] = kmeans.labels_
     print('AVERAGE LOG ERROR BY CLUSTER \n%s' % (train.groupby(kmeans.labels_)['logerror'].mean()))
     train['cluster'] = kmeans.labels_
+    sns.scatterplot(x = 'logerror', y = 'taxvaluedollarcnt', hue = kmeans.labels_, data = train)
+    plt.show()
     #g = sns.FacetGrid(train, col = 'cluster')
     #g = g.map(plt.scatter, 'latitude', 'longitude', alpha = .5)
-    sns.scatterplot('latitude', 'longitude', data = train, hue=kmeans.labels_, c = 'green')
+    #sns.scatterplot('latitude', 'longitude', data = train, hue=kmeans.labels_, c = 'green')
     
     #plt.show()
     return train, test
 
+def average_log_error_cluster(data):
+    print(data)
+    kmeans = KMeans(n_clusters = 3)
+    encoder = LabelEncoder()
+    scaler = MinMaxScaler()
+    train, test = train_test_split(data, random_state = 123)
+    kmeans.fit(train[['taxvaluedollarcnt']])
+    scaler.fit_transform(train)
+    sns.scatterplot('logerror', 'taxvaluedollarcnt', hue = kmeans.labels_, data = data)
+    plt.show()
+    print('AVERAGE LOG ERROR BY CLUSTER \n%s' % (train.groupby(kmeans.labels_)['logerror'].mean()))
 
 
 
 
 
-def baseline_model_zillow(train, test):
+def baseline_model_zillow(train):
     model = LinearRegression()
     x1=train.drop(columns=['logerror'])
     y1=train[['logerror']]
@@ -112,18 +125,16 @@ def baseline_model_zillow(train, test):
     return math.sqrt(MSE)
 
 
-def model_zillow_linear(train):
+def model_zillow_linear(x1, y1):
     model = LinearRegression()
-    x1, y1 = return_xy(train)
     model.fit(x1, y1)
     y_pred = model.predict(x1)
     MSE = mean_squared_error(y1, y_pred)
     return math.sqrt(MSE)
 
 
-def model_zillow_tree(train):
-    x1, y1= return_xy(train, test)
-    tree = DecisionTreeRegressor(max_depth = 6, random_state = 123)
+def model_zillow_tree(x1, y1):
+    tree = DecisionTreeRegressor(max_depth = 8, random_state = 123)
     tree.fit(x1, y1)
     y_pred = tree.predict(x1)
     MSE = mean_squared_error(y1, y_pred)
@@ -131,13 +142,22 @@ def model_zillow_tree(train):
     
 
 
-def model_zillow_forest(train, test):
-    x1, y1 = return_xy(train)
+def model_zillow_forest(x1, y1):
     forest = RandomForestRegressor(max_depth = 8, random_state = 123).fit(x1, y1)
     y_pred = forest.predict(x1)
     MSE = mean_squared_error(y1, y_pred)
     return math.sqrt(MSE)
 
 
+def model_zillow_forest_test(x1, y1, x2, y2):
+    forest = RandomForestRegressor(max_depth = 5, random_state = 123).fit(x1, y1)
+    y_pred = forest.predict(x2)
+    MSE = mean_squared_error(y2, y_pred)
+    return math.sqrt(MSE)
+
     
 
+def mean_log_error(data, y_train):
+    y_pred = (y_train['logerror'] == y_train['logerror'].sum()) / len(y_train)
+    MSE = mean_squared_error(y_train, y_pred)
+    return math.sqrt(MSE)

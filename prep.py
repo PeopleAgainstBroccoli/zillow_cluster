@@ -1,9 +1,24 @@
-#import acquire
+import seaborn as sns
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import LabelEncoder
-
+from sklearn.cluster import KMeans
+from sklearn.model_selection import train_test_split
+import warnings
+from sklearn.metrics import classification_report
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import confusion_matrix
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import mean_squared_error
+from sklearn.linear_model import LinearRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+warnings.filterwarnings("ignore")
+import math
 
 def nulls_by_col(df):
     num_missing = df.isnull().sum()
@@ -18,6 +33,15 @@ def nulls_by_row(df):
     rows_missing = pd.DataFrame({'num_cols_missing': num_cols_missing, 'pct_cols_missing': pct_cols_missing}).reset_index().groupby(['num_cols_missing','pct_cols_missing']).count().rename(index=str, columns={'index': 'num_rows'}).reset_index()
     return rows_missing
 
+
+def min_max_scaler(X):
+    scaler = MinMaxScaler(copy=True, feature_range=(0,1)).fit(X)
+    scaled_X = pd.DataFrame(scaler.transform(X), columns=X.columns.values).set_index([X.index.values])
+    return scaled_X
+def standard_scaler(X):
+    scaler = StandardScaler(copy=True, with_mean=True, with_std=True).fit(X)
+    scaled_X = pd.DataFrame(scaler.transform(X),columns=X.columns.values).set_index([X.index.values])
+    return scaled_X
 
 def prep_zillow(data):
     encoder = LabelEncoder()

@@ -86,7 +86,9 @@ def prep_zillow(data):
 
     zillow_data['fips'] = encoder.fit_transform(zillow_data['fips'])
     zillow_data = zillow_data.dropna()
-    zillow_data = min_max_scaler(zillow_data)
     return zillow_data
 
 
+
+def zillow_scale(data):
+    return min_max_scaler(data)

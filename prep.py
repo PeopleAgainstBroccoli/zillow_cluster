@@ -36,7 +36,8 @@ def prep_zillow(data):
     impute_mode = ['regionidcity', 'censustractandblock']
     impute_mean = [ 'calculatedfinishedsquarefeet', 'lotsizesquarefeet', 'regionidzip',\
                     'yearbuilt', 'structuretaxvaluedollarcnt', 'censustractandblock']
-    
+    data['taxdelinquencyflag'] = encoder.fit_transform(train[['taxdelinquencyflag']])
+
     for i in impute_mean:
 
         zillow_data[i] = imputer.fit_transform(zillow_data[[i]])

@@ -54,7 +54,7 @@ def prep_zillow(data):
                                               'garagetotalsqft', 'hashottuborspa', 'heatingorsystemtypeid', 'poolsizesum', \
                                               'propertyzoningdesc', 'regionidneighborhood', 'threequarterbathnbr', \
                                               'yardbuildingsqft26', 'structuretaxvaluedollarcnt', 'yardbuildingsqft17', \
-                                              'unitcnt', 'decktypeid', 'landtaxvaluedollarcnt'\
+                                              'unitcnt', 'decktypeid', 'landtaxvaluedollarcnt', \
                                               'buildingqualitytypeid', 'numberofstories', 'transactiondate', 'propertycountylandusecode'])
     
 

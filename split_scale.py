@@ -18,11 +18,10 @@ def standard_scaler(X):
 
 
 def min_max_scaler(X):
-    train, test = split_my_data(X)
-    scaler = MinMaxScaler(copy=True, feature_range=(0,1)).fit(train)
-    train = pd.DataFrame(scaler.transform(train), columns=train.columns.values).set_index([train.index.values])
-    test =  pd.DataFrame(scaler.transform(test), columns=test.columns.values).set_index([test.index.values])
-    return train, test, scaler
+    scaler = MinMaxScaler(copy=True, feature_range=(0,1)).fit(X)
+    scaled_X = pd.DataFrame(scaler.transform(X), columns=X.columns.values).set_index([X.index.values])
+
+    return scaled_X
 
 
 

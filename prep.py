@@ -18,7 +18,8 @@ def nulls_by_row(df):
     rows_missing = pd.DataFrame({'num_cols_missing': num_cols_missing, 'pct_cols_missing': pct_cols_missing}).reset_index().groupby(['num_cols_missing','pct_cols_missing']).count().rename(index=str, columns={'index': 'num_rows'}).reset_index()
     return rows_missing
 
-def prep_zillow_two(data):
+
+def prep_zillow(data):
     encoder = LabelEncoder()
     imputer = SimpleImputer(missing_values=np.nan, strategy='mean')
     mode_imputer = SimpleImputer(missing_values = np.nan, strategy = 'most_frequent')
@@ -54,7 +55,7 @@ def prep_zillow_two(data):
                                               'garagetotalsqft', 'fullbathcnt', 'censustractandblock', 'hashottuborspa', 'heatingorsystemtypeid', 'poolsizesum', \
                                               'propertyzoningdesc', 'regionidneighborhood', 'threequarterbathnbr', \
                                               'yardbuildingsqft26', 'structuretaxvaluedollarcnt', 'id', 'yardbuildingsqft17', \
-                                              'unitcnt', 'decktypeid', 'landtaxvaluedollarcnt',\
+                                              'unitcnt', 'decktypeid', 'landtaxvaluedollarcnt', 'assessmentyear', 'poor_people', 'log_me',\
                                               'buildingqualitytypeid', 'numberofstories', 'transactiondate', 'propertycountylandusecode'])
     
 
@@ -64,5 +65,3 @@ def prep_zillow_two(data):
     zillow_data['fips'] = encoder.fit_transform(zillow_data['fips'])
     zillow_data = zillow_data.dropna()
     return zillow_data
-
-

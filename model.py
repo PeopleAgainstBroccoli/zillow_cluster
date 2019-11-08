@@ -70,17 +70,13 @@ def results_train(logit, y_pred, y_pred_proba, x_train, y_train):
 
 
 
-def return_xy(train, test):
+def return_xy(train):
     x1 = train[['bedroomcnt', 'poolcnt', 'taxvaluedollarcnt', 'calculatedfinishedsquarefeet', 'bathroomcnt', \
-                'taxdelinquencyflag', 'taxdelinquencyyear']]
-    x2 = test[['bedroomcnt', 'poolcnt', 'taxvaluedollarcnt', 'calculatedfinishedsquarefeet', 'bathroomcnt', \
-               'taxdelinquencyflag', 'taxdelinquencyyear']]
+                'taxdelinquencyflag', 'taxdelinquencyyear', 'cluster']]
     #x1 = train[['bedroomcnt', 'bathroomcnt', 'calculatedfinishedsquarefeet', 'taxdelinquencyflag', 'cluster']]
     #x2 = test[['bedroomcnt', 'bathroomcnt', 'calculatedfinishedsquarefeet', 'taxdelinquencyflag']]
     y1=train[['logerror']]
-    y2=test[['logerror']]
-    return x1, x2, y1, y2
-
+    return x1, y1
 
 
 
@@ -109,44 +105,37 @@ def cluster_zillow(data):
 def baseline_model_zillow(train, test):
     model = LinearRegression()
     x1=train.drop(columns=['logerror'])
-    x2=test.drop(columns=['logerror'])
     y1=train[['logerror']]
-    y2=test[['logerror']]
     model.fit(x1, y1)
     y_pred = model.predict(x1)
-    #y_pred_proba = model.predict_proba(x2)
     MSE = mean_squared_error(y1, y_pred)
-    print('BASELINE')
     return math.sqrt(MSE)
 
 
-def model_zillow_linear(train, test):
+def model_zillow_linear(train):
     model = LinearRegression()
-    x1, x2, y1, y2 = return_xy(train, test)
+    x1, y1 = return_xy(train)
     model.fit(x1, y1)
     y_pred = model.predict(x1)
     MSE = mean_squared_error(y1, y_pred)
-    print('LINEAR_REGRESSION')
     return math.sqrt(MSE)
 
 
-def model_zillow_tree(train, test):
-    x1, x2, y1, y2 = return_xy(train, test)
+def model_zillow_tree(train):
+    x1, y1= return_xy(train, test)
     tree = DecisionTreeRegressor(max_depth = 6, random_state = 123)
     tree.fit(x1, y1)
     y_pred = tree.predict(x1)
     MSE = mean_squared_error(y1, y_pred)
-    print('TREE')
     return math.sqrt(MSE)
     
 
 
 def model_zillow_forest(train, test):
-    x1, x2, y1, y2 = return_xy(train, test)
+    x1, y1 = return_xy(train)
     forest = RandomForestRegressor(max_depth = 8, random_state = 123).fit(x1, y1)
     y_pred = forest.predict(x1)
     MSE = mean_squared_error(y1, y_pred)
-    print('FOREST')
     return math.sqrt(MSE)
 
 

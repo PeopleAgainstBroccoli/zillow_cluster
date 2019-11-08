@@ -58,9 +58,9 @@ def prep_zillow(data):
     for a in assumed_zero:
         zillow_data[a] = zillow_data[a].fillna(0)
     
-    impute_mode = ['regionidcity', 'censustractandblock']
+    impute_mode = ['regionidcity']
     impute_mean = [ 'calculatedfinishedsquarefeet', 'lotsizesquarefeet', 'regionidzip',\
-                    'yearbuilt', 'structuretaxvaluedollarcnt', 'censustractandblock']
+                    'yearbuilt']
 
 
     data['taxdelinquencyflag'] = encoder.fit_transform(data[['taxdelinquencyflag']])
@@ -71,7 +71,6 @@ def prep_zillow(data):
     for i in impute_mode:
         zillow_data[i] = mode_imputer.fit_transform(zillow_data[[i]])
         
-    #impute regionidcity, calculatedfinishedsquarefeet, lotsizesquarefeet, regionidzip, yearbuilt, structuretaxvaluedollarcnt, censustractandblock
     zillow_data = zillow_data.drop(columns = ['finishedsquarefeet15', 'finishedsquarefeet13', 'buildingclasstypeid', \
                                 'storytypeid', 'pooltypeid2', 'pooltypeid10', 'pooltypeid7','basementsqft', \
                                 'typeconstructiontypeid', 'fireplaceflag', 'calculatedbathnbr', 'airconditioningtypeid', 'architecturalstyletypeid', \
@@ -85,7 +84,6 @@ def prep_zillow(data):
 
 
 
-    #subset = zillow_data[['latitude', 'longitude', 'taxvaluedollarcnt', 'logerror', 'fips']]
     zillow_data['fips'] = encoder.fit_transform(zillow_data['fips'])
     zillow_data = zillow_data.dropna()
     zillow_data = min_max_scaler(zillow_data)

@@ -1,4 +1,3 @@
-import dbtools as db
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
@@ -20,6 +19,16 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 warnings.filterwarnings("ignore")
 import math
+
+
+def min_max_scaler(X):
+    scaler = MinMaxScaler(copy=True, feature_range=(0,1)).fit(X)
+    scaled_X = pd.DataFrame(scaler.transform(X), columns=X.columns.values).set_index([X.index.values])
+    return scaled_X
+def standard_scaler(X):
+    scaler = StandardScaler(copy=True, with_mean=True, with_std=True).fit(X)
+    scaled_X = pd.DataFrame(scaler.transform(X),columns=X.columns.values).set_index([X.index.values])
+    return scaled_X
 
 
 def results_train(logit, y_pred, y_pred_proba, x_train, y_train):

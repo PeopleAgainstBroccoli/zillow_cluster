@@ -43,7 +43,8 @@ def standard_scaler(X):
     scaled_X = pd.DataFrame(scaler.transform(X),columns=X.columns.values).set_index([X.index.values])
     return scaled_X
 
-def prep_zillow(data):
+
+def prep_zillow(data, scale_data = True):
     encoder = LabelEncoder()
     imputer = SimpleImputer(missing_values=np.nan, strategy='mean')
     mode_imputer = SimpleImputer(missing_values = np.nan, strategy = 'most_frequent')
@@ -86,7 +87,12 @@ def prep_zillow(data):
 
     zillow_data['fips'] = encoder.fit_transform(zillow_data['fips'])
     zillow_data = zillow_data.dropna()
+    if scale_data:
+        zillow_data = min_max_scaler(zillow_data)
     return zillow_data
+
+
+
 
 
 

@@ -63,41 +63,27 @@ def results_train(logit, y_pred, y_pred_proba, x_train, y_train):
 
 
 
-
-
-
-
-
-
-
 def return_xy(train):
     x1 = train[['bedroomcnt', 'poolcnt', 'taxvaluedollarcnt', 'calculatedfinishedsquarefeet', 'bathroomcnt', \
                 'taxdelinquencyflag', 'taxdelinquencyyear']]
-    #x1 = train[['bedroomcnt', 'bathroomcnt', 'calculatedfinishedsquarefeet', 'taxdelinquencyflag', 'cluster']]
-    #x2 = test[['bedroomcnt', 'bathroomcnt', 'calculatedfinishedsquarefeet', 'taxdelinquencyflag']]
     y1=train[['logerror']]
     return x1, y1
 
 
 
 def cluster_zillow(data):
-    kmeans = KMeans(n_clusters = 3)
+    kmeans = KMeans(n_clusters = 4)
     encoder = LabelEncoder()
     scaler = MinMaxScaler()
     train, test = train_test_split(data, random_state = 123)
     kmeans.fit(train[['taxvaluedollarcnt']])
     scaler.fit_transform(train)
-    train['cluster_group'] = kmeans.labels_
     print('AVERAGE LOG ERROR BY CLUSTER \n%s' % (train.groupby(kmeans.labels_)['logerror'].mean()))
     train['cluster'] = kmeans.labels_
-    sns.scatterplot(x = 'logerror', y = 'taxvaluedollarcnt', hue = kmeans.labels_, data = train)
-    plt.show()
-    #g = sns.FacetGrid(train, col = 'cluster')
-    #g = g.map(plt.scatter, 'latitude', 'longitude', alpha = .5)
-    #sns.scatterplot('latitude', 'longitude', data = train, hue=kmeans.labels_, c = 'green')
-    
-    #plt.show()
+    sns.scatterplot('taxvaluedollarcnt','cluster', data = train, hue=kmeans.labels_, c = 'green')
     return train, test
+
+
 
 def average_log_error_cluster(data):
     print(data)
@@ -161,3 +147,24 @@ def mean_log_error(data, y_train):
     y_pred = (y_train['logerror'] == y_train['logerror'].sum()) / len(y_train)
     MSE = mean_squared_error(y_train, y_pred)
     return math.sqrt(MSE)
+
+
+
+def cluster_forest(train, test):
+    x1, x2, y1, y2 = return_xy(train, test)
+    model = RandomForestRegressor(max_depth = 8, random_state = 123).fit(x1, y1)
+    model.fit(x1, y1)
+    y_pred = model.predict(x1)
+    MSE = mean_squared_error(y1, y_pred)
+    print('<<<<<>>>>><<<<<>>>>>')
+    print(math.sqrt(MSE))
+
+
+def cluster_train_forest(train):
+    for i in range(0, 4):
+        train_cluster = train
+        train_cluster = train[(train['cluster'] == i)]
+        train_cluster = train_cluster.drop(columns = ['cluster'])
+        cluster_forest(train_cluster, test)
+        print(len(train_cluster))
+

@@ -71,16 +71,23 @@ def return_xy(train):
 
 
 
-def cluster_zillow(data):
+def cluster_zillow(data, return_type = 1, return_cluster_column = False):
     kmeans = KMeans(n_clusters = 4)
     encoder = LabelEncoder()
     scaler = MinMaxScaler()
     train, test = train_test_split(data, random_state = 123)
-    kmeans.fit(train[['taxvaluedollarcnt']])
+    if return_type == 2:
+        kmeans.fit(train[['logerror']])
+    if return_type == 1:
+        kmeans.fit(train[['taxvaluedollarcnt']])
+    if return_cluster_column:
+        train['cluster'] = kmeans.labels_
     scaler.fit_transform(train)
-    print('AVERAGE LOG ERROR BY CLUSTER \n%s' % (train.groupby(kmeans.labels_)['logerror'].mean()))
+    train['cluster_group'] = kmeans.labels_
     train['cluster'] = kmeans.labels_
-    sns.scatterplot('taxvaluedollarcnt','cluster', data = train, hue=kmeans.labels_, c = 'green')
+    sns.scatterplot('latitude', 'longitude', data = train, hue=kmeans.labels_, c = 'green')
+    
+    plt.show()
     return train, test
 
 
@@ -167,4 +174,5 @@ def cluster_train_forest(train):
         train_cluster = train_cluster.drop(columns = ['cluster'])
         cluster_forest(train_cluster, test)
         print(len(train_cluster))
+
 
